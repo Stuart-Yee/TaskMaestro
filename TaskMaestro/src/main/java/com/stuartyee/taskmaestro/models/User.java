@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
@@ -35,13 +37,13 @@ public class User {
 	private Date updatedAt;
 	
 	@NotBlank
-	private String naame;
+	private String name;
 	
 	@Size(min=5, max=20, message="Username must be between 5 and 20 characters long")
 	@NotBlank
 	private String username;
 	
-	@Size(min=8, message="Password must be at least 8 characters long") //Introduct @Pattern regex to enforce better password complexity
+	@Size(min=8, message="Password must be at least 8 characters long") //Introduce @Pattern regex to enforce better password complexity
 	@NotBlank
 	private String password;
 	
@@ -74,7 +76,128 @@ public class User {
 			joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "comment_id")
 			)
-	private List<Comment> likedComments;  
+	private List<Comment> likedComments;
+
+
+	public User() {
+	}  
+	
+	@PrePersist
+	protected void onCreate() {
+		this.createdAt = new Date();
+	}
+	
+	@PreUpdate
+	protected void onUpdate() {
+		this.updatedAt = new Date();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getPasswordConfirmation() {
+		return passwordConfirmation;
+	}
+
+	public void setPasswordConfirmation(String passwordConfirmation) {
+		this.passwordConfirmation = passwordConfirmation;
+	}
+
+	public int getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(int permissions) {
+		this.permissions = permissions;
+	}
+
+	public List<Task> getCreatedTasks() {
+		return createdTasks;
+	}
+
+	public void setCreatedTasks(List<Task> createdTasks) {
+		this.createdTasks = createdTasks;
+	}
+
+	public List<Task> getOwnedTasks() {
+		return ownedTasks;
+	}
+
+	public void setOwnedTasks(List<Task> ownedTasks) {
+		this.ownedTasks = ownedTasks;
+	}
+
+	public List<Task> getHelpingTasks() {
+		return helpingTasks;
+	}
+
+	public void setHelpingTasks(List<Task> helpingTasks) {
+		this.helpingTasks = helpingTasks;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public List<Comment> getLikedComments() {
+		return likedComments;
+	}
+
+	public void setLikedComments(List<Comment> likedComments) {
+		this.likedComments = likedComments;
+	}
+	
+	
+	
 	
 	
 
