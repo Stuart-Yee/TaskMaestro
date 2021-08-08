@@ -28,11 +28,11 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
 	
 	public List<Task> findByOwner(User owner); // Find tasks under a given owner
 	
-	public List<Task> findByOwnerCompletedTrue(User owner); //Find all the tasks completed by a given person
-	
-	public List<Task> findByOwnerCompletedFalse(User owner); //Find all the tasks open by a given owner
-	
-	public List<Task> findByIdNotIn(Long helpingTaskIds); //Use a list of task NOT in the many to many User Attribute helpingTasks
+	public List<Task> findCompletedTrueByOwner(User owner); //Find all the tasks completed by a given person
+
+	public List<Task> findCompletedFalseByOwner(User owner); //Find all the tasks open by a given owner
+
+	public List<Task> findByIdNotIn(List<Long> helpingTaskIds); //Use a list of task NOT in the many to many User Attribute helpingTasks
 	
 	
 }

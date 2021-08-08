@@ -52,11 +52,14 @@ public class User {
 	
 	private int permissions; //Permissions levels coded as an integer rather than string to avoid errors
 	
+	////
+	
 	@OneToMany(mappedBy="creator", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Task> createdTasks;
 	
 	@OneToMany(mappedBy="owner", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Task> ownedTasks;
+	/////
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(

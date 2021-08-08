@@ -15,11 +15,9 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
 	
 	public Optional<Comment> findById(Long id);
 	
-	public List<Comment> findByIdInOrderedByNumberOfLikesAsc(List<Long> ids); //List of Ids from parent object (Comment or Task)
+	public List<Comment> findByIdInOrderByNumberOfLikesAsc(List<Long> ids); //List of Ids from parent object (Comment or Task)
 	
-	public List<Comment> findByIdInOrderedByNumberOfLikesDesc(List<Long> ids);
-	
-	
-	
+	public List<Comment> findByIdInOrderByNumberOfLikesDesc(List<Long> ids);
+
 
 }

@@ -38,12 +38,14 @@ public class Comment {
 	@Size(max=500, message="Must be less than 500 characters")
 	private String content;
 	
-	@Column(updatable=false)
+	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="task_id", updatable=false)
 	private Task parentTask;
 	
-	@Column(updatable=false)
+	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id", updatable=false)
 	private User commenter;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -58,6 +60,7 @@ public class Comment {
 	private List<Comment> replies;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="comment_id", updatable=false)
 	private Comment parentComment;
 	
 	private int numberOfLikes;

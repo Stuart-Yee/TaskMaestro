@@ -44,12 +44,17 @@ public class Task {
 	
 	private Date completedOn;
 	
-	@Column(updatable=false)
+	
+	///
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="creator_user_id", updatable=false)
 	private User creator;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="owner_user_id")
 	private User owner;
+	///
+	
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(

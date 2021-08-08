@@ -43,6 +43,19 @@ public class MainService {
 		uRepo.save(user);
 	}
 	
+	public boolean authenticateUser(String username, String password) {
+		User user = uRepo.findByUsername(username);
+		if(user == null) {
+			return false;
+		} else {
+			if(BCrypt.checkpw(password, user.getPassword())) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+	
 	
 	
 	
