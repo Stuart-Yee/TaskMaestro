@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix = "t" tagdir = "/WEB-INF/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -12,8 +13,26 @@
 <title>TaskMaestro Dashboard</title>
 </head>
 <body>
+<t:nav>
 
 Yo, <c:out value="${user.name }"/>!
 
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Task</th><th>Owner</th><th>Due Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${openTasks}" var="task">
+				<tr>
+					<td>${task.description}</td><td>${task.owner.name}</td><td>${task.dueDate}</td>
+				</tr>
+			</c:forEach>			
+		</tbody>
+
+	</table>
+
+</t:nav>
 </body>
 </html>

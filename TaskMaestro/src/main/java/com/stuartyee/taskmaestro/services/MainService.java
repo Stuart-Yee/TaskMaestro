@@ -1,8 +1,11 @@
 package com.stuartyee.taskmaestro.services;
 
+import java.util.List;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import com.stuartyee.taskmaestro.models.Task;
 import com.stuartyee.taskmaestro.models.User;
 import com.stuartyee.taskmaestro.repositories.CommentRepository;
 import com.stuartyee.taskmaestro.repositories.TaskRepository;
@@ -21,12 +24,27 @@ public class MainService {
 		this.cRepo = cRepo;
 	}
 	
+	
+	//User methods
+	public List<User> findAllUsers(){
+		return uRepo.findAll();
+	}
+	
 	public User findUserByUsername(String username) {
 		try {
 			return uRepo.findByUsername(username);
 		} catch(Exception e){
 			return null;
 		}
+	}
+	
+	public User findUserbyId(Long Id) {
+		if(uRepo.findById(Id).isPresent()) {
+			return uRepo.findById(Id).get();
+		} else {
+			return null;
+		}
+		
 	}
 	
 	public boolean usernameExists(String username) {
@@ -54,6 +72,24 @@ public class MainService {
 				return false;
 			}
 		}
+	}
+	
+	
+	//Task methods
+	public void saveTask(Task task) {
+		tRepo.save(task);
+	}
+	
+	public List<Task> findAllTasks(){
+		return tRepo.findAll();
+	}
+	
+	public List<Task> findOpenTasksAsc(){
+		return tRepo.findByCompletedFalseOrderByDueDateAsc();
+	}
+	
+	public List<Task> findOpenTasksDsc(){
+		return tRepo.findByCompletedFalseOrderByDueDateDesc();
 	}
 	
 	

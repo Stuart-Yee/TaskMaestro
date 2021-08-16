@@ -31,7 +31,7 @@
                     <div class="form-outline flex-fill mb-0">
                      
 					<form:label path="name" class="form-label">Name:</form:label>
-					<span class="error"><form:errors path="name"/></span>
+					<p class="error"><form:errors path="name"/></p>
 					<form:input path="name" id="form3Example1c" class="form-control"/>
                       
                     </div>
@@ -42,7 +42,7 @@
                     <div class="form-outline flex-fill mb-0">
                     	
                     <form:label path="username" class="form-label">Username:</form:label>
-					<span class="error"><form:errors path="username"/></span>
+					<p class="error"><form:errors path="username"/></p>
 					<form:input path="username" id="form3Example3c" class="form-control"/>
                     
                     
@@ -55,7 +55,7 @@
                     <div class="form-outline flex-fill mb-0">
                       
                       	<form:label path="password" class="form-label">Password:</form:label>
-						<span class="error"><form:errors path="password"/></span>
+						<p class="error"><form:errors path="password"/></p>
 						<form:input type="password" path="password" id="form3Example4c" class="form-control"/>
                       
                       
@@ -80,14 +80,20 @@
                   </div>
 
                 </form:form>
+             
+                
+               
 
               </div>
               <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
 
                 <img src="https://mdbootstrap.com/img/Photos/new-templates/bootstrap-registration/draw1.png" class="img-fluid" alt="Sample image">
+                
 
               </div>
+              
             </div>
+            <p>Already a User? <a href="/login">Login Here!</a></p>
           </div>
         </div>
       </div>
