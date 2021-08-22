@@ -92,6 +92,10 @@ public class MainService {
 		return tRepo.findByCompletedFalseOrderByDueDateDesc();
 	}
 	
+	public Task findTaskById(Long id) {
+		return tRepo.findById(id).orElse(null);
+	}
+	
 	
 	
 	

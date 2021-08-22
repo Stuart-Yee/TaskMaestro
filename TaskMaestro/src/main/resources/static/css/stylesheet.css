@@ -62,3 +62,8 @@ body {
 	vertical-align: middle;
 	display: inline-block;
 }
+
+#footer {
+	display: block;
+	
+}

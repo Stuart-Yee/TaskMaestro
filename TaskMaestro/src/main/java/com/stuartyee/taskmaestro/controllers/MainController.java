@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -114,11 +115,25 @@ public class MainController {
 		}
 	}
 	
-	@GetMapping("logout")
+	@GetMapping("/tasks/{id}/view")
+	public String showTask(HttpSession session, Model viewModel, @PathVariable("id") Long id) {
+		if(session.getAttribute("userLoggedIn") == null) {
+			return "redirect:/login";
+		} else {
+			User user = (User)session.getAttribute("userLoggedIn");
+			viewModel.addAttribute("user", user);
+			viewModel.addAttribute("Task", mServ.findTaskById(id)); 
+			return "showTask.jsp";
+		}
+	}
+	
+	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/login";
 	}
+	
+	
 	
 	
 

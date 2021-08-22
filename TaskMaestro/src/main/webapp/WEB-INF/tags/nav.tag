@@ -37,8 +37,13 @@
 		</div>
 			<hr>
 			<jsp:doBody/>
+			<div id="footer">
+			<hr>
+			<p>Footer stuff here</p>
 		</div>
-
+		</div>
+		
+		
 
 
 
