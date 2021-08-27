@@ -154,6 +154,21 @@ public class MainController {
 		}
 	}
 	
+	@RequestMapping("/tasks/{task_id}/delete/{comment_id}")
+	public String deleteComment(
+			HttpSession session,
+			@PathVariable("task_id") Long task_id,
+			@PathVariable("comment_id") Long comment_id
+			) {
+		if(session.getAttribute("userLoggedIn") == null) {
+			return "redirect:/login";
+		} else {
+			mServ.deleteComment(mServ.findCommentById(comment_id), (User)session.getAttribute("userLoggedIn"));
+			return "redirect:/tasks/{task_id}/view";
+		}
+		
+	}
+	
 	
 	
 	

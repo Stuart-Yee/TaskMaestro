@@ -55,6 +55,13 @@ Created by ${Task.creator.name } on ${Task.createdAt }
 			<td>
 				<p>${comment.content}</p>
 				<p>From: ${comment.commenter.name}, on ${comment.createdAt}. ${comment.numberOfLikes} Likes</p>
+				<c:choose>
+					<c:when test="${comment.commenter.id == user.id }">
+						<p><a href="/tasks/${Task.id }/delete/${comment.id}">Delete</a></p>
+					</c:when>
+					<c:otherwise>
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td>Liked By:
 				<c:forEach items="${comment.likers }" var="liker">

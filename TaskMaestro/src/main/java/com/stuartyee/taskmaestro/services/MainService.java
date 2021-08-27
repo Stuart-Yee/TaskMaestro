@@ -106,8 +106,12 @@ public class MainService {
 		cRepo.save(comment);
 	}
 	
+	public Comment findCommentById(Long id) {
+		return cRepo.findById(id).orElse(null);
+	}
+	
 	public void deleteComment(Comment comment, User user) {
-		if(user == comment.getCommenter()) {
+		if(user.getId() == comment.getCommenter().getId()) {
 			cRepo.delete(comment);
 		}
 	}
