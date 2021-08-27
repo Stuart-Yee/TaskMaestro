@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="tasks")
-public class Task {
+public class Task implements Commentable{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

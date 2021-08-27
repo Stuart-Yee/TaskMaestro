@@ -7,11 +7,14 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.stuartyee.taskmaestro.models.Comment;
+import com.stuartyee.taskmaestro.models.Task;
 
 @Repository
 public interface CommentRepository extends CrudRepository<Comment, Long> {
 	
 	public List<Comment> findAll();
+	
+	public List<Comment> findByParentTask(Task task);
 	
 	public Optional<Comment> findById(Long id);
 	

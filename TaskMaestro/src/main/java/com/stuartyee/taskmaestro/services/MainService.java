@@ -5,6 +5,7 @@ import java.util.List;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import com.stuartyee.taskmaestro.models.Comment;
 import com.stuartyee.taskmaestro.models.Task;
 import com.stuartyee.taskmaestro.models.User;
 import com.stuartyee.taskmaestro.repositories.CommentRepository;
@@ -94,6 +95,25 @@ public class MainService {
 	
 	public Task findTaskById(Long id) {
 		return tRepo.findById(id).orElse(null);
+	}
+	
+	// Comment Methods
+	public void saveComment(String content, User user, Task task) {
+		Comment comment = new Comment();
+		comment.setContent(content);
+		comment.setCommenter(user);
+		comment.setParentTask(task);
+		cRepo.save(comment);
+	}
+	
+	public void deleteComment(Comment comment, User user) {
+		if(user == comment.getCommenter()) {
+			cRepo.delete(comment);
+		}
+	}
+	
+	public List<Comment> findCommentsByTask(Task task){
+		return cRepo.findByParentTask(task);
 	}
 	
 	

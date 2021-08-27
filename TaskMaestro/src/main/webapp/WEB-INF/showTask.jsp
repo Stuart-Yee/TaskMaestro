@@ -43,6 +43,29 @@
 <p>
 Created by ${Task.creator.name } on ${Task.createdAt }
 </p>
+<h2>Comments</h2>
+<form action="/tasks/${Task.id}/comment" method="post">
+	<textarea name="comment"></textarea>
+	<button>Leave Comment</button>
+</form>
+
+<table class="table table-bordered">
+	<c:forEach items="${comments}" var = "comment">
+		<tr>
+			<td>
+				<p>${comment.content}</p>
+				<p>From: ${comment.commenter.name}, on ${comment.createdAt}. ${comment.numberOfLikes} Likes</p>
+			</td>
+			<td>Liked By:
+				<c:forEach items="${comment.likers }" var="liker">
+					<p>${liker.name}</p>
+				</c:forEach>
+			</td>
+		</tr>
+	</c:forEach>
+
+	
+</table>
 </t:nav>
 </body>
 </html>

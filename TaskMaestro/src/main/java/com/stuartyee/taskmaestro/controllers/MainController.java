@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,6 +31,11 @@ public class MainController {
 	MainService mServ;
 	@Autowired 
 	UserValidator uVal;
+	
+	@RequestMapping("/")
+	public String defaultNav() {
+		return "redirect:/login";
+	}
 	
 	@GetMapping("/login")
 	public String loginPage() {
@@ -120,9 +126,11 @@ public class MainController {
 		if(session.getAttribute("userLoggedIn") == null) {
 			return "redirect:/login";
 		} else {
+			Task task = mServ.findTaskById(id);
 			User user = (User)session.getAttribute("userLoggedIn");
 			viewModel.addAttribute("user", user);
-			viewModel.addAttribute("Task", mServ.findTaskById(id)); 
+			viewModel.addAttribute("Task", task);
+			viewModel.addAttribute("comments", mServ.findCommentsByTask(task));
 			return "showTask.jsp";
 		}
 	}
@@ -131,6 +139,19 @@ public class MainController {
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/login";
+	}
+	
+	//Comment
+	@PostMapping("/tasks/{id}/comment")
+	public String postComment(HttpSession session, @RequestParam("comment") String comment, @PathVariable("id") Long id) {
+		if(session.getAttribute("userLoggedIn") == null) {
+			return "redirect:/login";
+		} else {
+			User user = (User)session.getAttribute("userLoggedIn");
+			Task task = mServ.findTaskById(id);
+			mServ.saveComment(comment, user, task);
+			return "redirect:/tasks/{id}/view";
+		}
 	}
 	
 	

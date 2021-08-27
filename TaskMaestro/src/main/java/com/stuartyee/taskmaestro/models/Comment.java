@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="comments")
-public class Comment {
+public class Comment implements Commentable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -55,13 +55,6 @@ public class Comment {
 			inverseJoinColumns = @JoinColumn(name = "user_id")
 			)
 	private List<User> likers;  
-	
-	@OneToMany(mappedBy="parentComment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<Comment> replies;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="comment_id", updatable=false)
-	private Comment parentComment;
 	
 	private int numberOfLikes;
 
@@ -132,22 +125,6 @@ public class Comment {
 
 	public void setLikers(List<User> likers) {
 		this.likers = likers;
-	}
-
-	public List<Comment> getReplies() {
-		return replies;
-	}
-
-	public void setReplies(List<Comment> replies) {
-		this.replies = replies;
-	}
-
-	public Comment getParentComment() {
-		return parentComment;
-	}
-
-	public void setParentComment(Comment parentComment) {
-		this.parentComment = parentComment;
 	}
 
 	public int getNumberOfLikes() {
