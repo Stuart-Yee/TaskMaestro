@@ -62,7 +62,7 @@ public class Task implements Commentable{
 			joinColumns = @JoinColumn(name = "task_id"),
 			inverseJoinColumns = @JoinColumn(name = "user_id")
 			)
-	private List<Task> helpers;
+	private List<User> helpers;
 	
 	@OneToMany(mappedBy="parentTask", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Comment> comments;
@@ -152,11 +152,11 @@ public class Task implements Commentable{
 		this.owner = owner;
 	}
 
-	public List<Task> getHelpers() {
+	public List<User> getHelpers() {
 		return helpers;
 	}
 
-	public void setHelpers(List<Task> helpers) {
+	public void setHelpers(List<User> helpers) {
 		this.helpers = helpers;
 	}
 

@@ -28,11 +28,22 @@
 		</table>
 	</td>
 	<td>
-		<table>
+<table>
 		<tr><td>Helpers:</td></tr>
 		<tr>
 			<td>
-			List of helpers and function to add helpers
+			<c:forEach items="${helpers}" var="helper">
+				<p>${helper.name }<p>
+			</c:forEach>
+			<form action="/tasks/${Task.id}/addHelper" method="post">
+			<select name="newHelper">
+				<c:forEach items="${notHelpers}" var="notHelper">
+					<option value="${notHelper.id}">${notHelper.name}</option>
+				</c:forEach>
+			</select>
+			<button>Add Helper</button>
+			</form>
+			
 			
 			</td>
 		</tr>

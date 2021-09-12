@@ -1,5 +1,6 @@
 package com.stuartyee.taskmaestro.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -72,6 +73,18 @@ public class MainService {
 			} else {
 				return false;
 			}
+		}
+	}
+	
+	public List<User> findNotHelping(Task task) {
+		List<Long> userIds = new ArrayList<>();
+		for(User user : task.getHelpers()) {
+			userIds.add(user.getId());
+		}
+		if(task.getHelpers().isEmpty()) {
+			return uRepo.findAll();
+		} else {
+			return uRepo.findByIdNotIn(userIds);
 		}
 	}
 	

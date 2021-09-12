@@ -3,6 +3,7 @@ package com.stuartyee.taskmaestro.controllers;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -128,11 +129,25 @@ public class MainController {
 		} else {
 			Task task = mServ.findTaskById(id);
 			User user = (User)session.getAttribute("userLoggedIn");
+			List<User> helpers = task.getHelpers();
 			viewModel.addAttribute("user", user);
 			viewModel.addAttribute("Task", task);
 			viewModel.addAttribute("comments", mServ.findCommentsByTask(task));
+			viewModel.addAttribute("helpers", helpers);
+			viewModel.addAttribute("notHelpers", mServ.findNotHelping(task));
 			return "showTask.jsp";
 		}
+	}
+	
+	@PostMapping("/tasks/{id}/addHelper")
+	public String addHelper(
+			@PathVariable("id") Long id, 
+			@RequestParam("newHelper") User newHelper
+			) {
+		Task task = mServ.findTaskById(id);
+		task.getHelpers().add(newHelper);
+		mServ.saveTask(task);
+		return "redirect:/tasks/{id}/view";
 	}
 	
 	@GetMapping("/logout")
