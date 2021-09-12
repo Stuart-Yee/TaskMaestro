@@ -32,17 +32,6 @@ public class MainService {
 		this.cRepo = cRepo;
 	}
 	
-	//Helper function to convert dates to Month Day, Year format (September 12, 2021)
-	public String convertDate(Date date) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
-		ZoneId defaultZoneId = ZoneId.systemDefault();
-		Instant instant = date.toInstant();
-		LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
-		String formattedDate = localDate.format(formatter);
-		return formattedDate;
-	}
-		
-	
 	
 	//User methods
 	public List<User> findAllUsers(){
@@ -139,12 +128,21 @@ public class MainService {
 	
 	public Task findTaskById(Long id) {
 		Task task = tRepo.findById(id).orElse(null);
-		if (task.getCompletedOn() != null) {
-			task.setFormattedCompletedDate(convertDate(task.getCompletedOn()));
-		}
+		task.setFormattedCompletedDate(convertDate(task.getCompletedOn()));
 		task.setFormattedDueDate(convertDate(task.getDueDate()));		
 		return task; 
 	}
+	
+	//Helper function to convert dates
+	public String convertDate(Date date) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+		ZoneId defaultZoneId = ZoneId.systemDefault();
+		Instant instant = date.toInstant();
+		LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
+		String formattedDate = localDate.format(formatter);
+		return formattedDate;
+	}
+		
 	
 	// Comment Methods
 	public void saveComment(String content, User user, Task task) {
@@ -166,11 +164,7 @@ public class MainService {
 	}
 	
 	public List<Comment> findCommentsByTask(Task task){
-		List<Comment> comments = cRepo.findByParentTask(task);
-		for(Comment comment: comments) {
-			comment.setFormattedCreatedDate(convertDate(comment.getCreatedAt()));
-		}
-		return comments;
+		return cRepo.findByParentTask(task);
 	}
 	
 	

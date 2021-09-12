@@ -32,7 +32,7 @@ public class MainService {
 		this.cRepo = cRepo;
 	}
 	
-	//Helper function to convert dates to Month Day, Year format (September 12, 2021)
+	//Helper function to convert dates
 	public String convertDate(Date date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
 		ZoneId defaultZoneId = ZoneId.systemDefault();
@@ -166,11 +166,7 @@ public class MainService {
 	}
 	
 	public List<Comment> findCommentsByTask(Task task){
-		List<Comment> comments = cRepo.findByParentTask(task);
-		for(Comment comment: comments) {
-			comment.setFormattedCreatedDate(convertDate(comment.getCreatedAt()));
-		}
-		return comments;
+		return cRepo.findByParentTask(task);
 	}
 	
 	

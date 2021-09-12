@@ -166,11 +166,7 @@ public class MainService {
 	}
 	
 	public List<Comment> findCommentsByTask(Task task){
-		List<Comment> comments = cRepo.findByParentTask(task);
-		for(Comment comment: comments) {
-			comment.setFormattedCreatedDate(convertDate(comment.getCreatedAt()));
-		}
-		return comments;
+		return cRepo.findByParentTask(task);
 	}
 	
 	
