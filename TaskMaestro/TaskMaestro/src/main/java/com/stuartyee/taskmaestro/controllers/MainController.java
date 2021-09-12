@@ -1,7 +1,10 @@
 package com.stuartyee.taskmaestro.controllers;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -135,6 +138,10 @@ public class MainController {
 			viewModel.addAttribute("comments", mServ.findCommentsByTask(task));
 			viewModel.addAttribute("helpers", helpers);
 			viewModel.addAttribute("notHelpers", mServ.findNotHelping(task));
+			Date date = task.getDueDate();
+			String formattedDate = mServ.convertDate(date);
+			viewModel.addAttribute("dueDate", formattedDate);
+			
 			return "showTask.jsp";
 		}
 	}

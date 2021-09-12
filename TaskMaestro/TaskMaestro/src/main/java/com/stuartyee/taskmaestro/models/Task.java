@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -43,6 +44,12 @@ public class Task implements Commentable{
 	private Boolean completed;
 	
 	private Date completedOn;
+	
+	@Transient
+	private String formattedDueDate;
+	
+	@Transient
+	private String formattedCompletedDate;
 	
 	
 	///
@@ -166,6 +173,22 @@ public class Task implements Commentable{
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+
+	public String getFormattedDueDate() {
+		return formattedDueDate;
+	}
+
+	public void setFormattedDueDate(String formattedDueDate) {
+		this.formattedDueDate = formattedDueDate;
+	}
+
+	public String getFormattedCompletedDate() {
+		return formattedCompletedDate;
+	}
+
+	public void setFormattedCompletedDate(String formattedCompletedDate) {
+		this.formattedCompletedDate = formattedCompletedDate;
 	}
 	
 	

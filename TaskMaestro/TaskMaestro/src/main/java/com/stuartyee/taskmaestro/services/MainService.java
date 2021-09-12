@@ -1,6 +1,12 @@
 package com.stuartyee.taskmaestro.services;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -95,20 +101,48 @@ public class MainService {
 	}
 	
 	public List<Task> findAllTasks(){
-		return tRepo.findAll();
+		List<Task> tasks = tRepo.findAll();
+		for (Task task : tasks) {
+			task.setFormattedCompletedDate(convertDate(task.getCompletedOn()));
+			task.setFormattedDueDate(convertDate(task.getDueDate()));
+		}
+		return tasks;
 	}
 	
 	public List<Task> findOpenTasksAsc(){
-		return tRepo.findByCompletedFalseOrderByDueDateAsc();
+		List<Task> tasks = tRepo.findByCompletedFalseOrderByDueDateAsc();
+		for (Task task : tasks) {
+			task.setFormattedDueDate(convertDate(task.getDueDate()));
+		}
+		return tasks;
 	}
 	
 	public List<Task> findOpenTasksDsc(){
-		return tRepo.findByCompletedFalseOrderByDueDateDesc();
+		List<Task> tasks = tRepo.findByCompletedFalseOrderByDueDateDesc();
+		for (Task task : tasks) {
+			task.setFormattedCompletedDate(convertDate(task.getCompletedOn()));
+			task.setFormattedDueDate(convertDate(task.getDueDate()));
+		}
+		return tasks;
 	}
 	
 	public Task findTaskById(Long id) {
-		return tRepo.findById(id).orElse(null);
+		Task task = tRepo.findById(id).orElse(null);
+		task.setFormattedCompletedDate(convertDate(task.getCompletedOn()));
+		task.setFormattedDueDate(convertDate(task.getDueDate()));		
+		return task; 
 	}
+	
+	//Helper function to convert dates
+	public String convertDate(Date date) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+		ZoneId defaultZoneId = ZoneId.systemDefault();
+		Instant instant = date.toInstant();
+		LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
+		String formattedDate = localDate.format(formatter);
+		return formattedDate;
+	}
+		
 	
 	// Comment Methods
 	public void saveComment(String content, User user, Task task) {

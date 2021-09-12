@@ -26,7 +26,7 @@ Yo, <c:out value="${user.name }"/>!
 		<tbody>
 			<c:forEach items="${openTasks}" var="task">
 				<tr>
-					<td><a href="/tasks/${task.id}/view">${task.description}</a></td><td>${task.owner.name}</td><td>${task.dueDate}</td>
+					<td><a href="/tasks/${task.id}/view">${task.description}</a></td><td>${task.owner.name}</td><td>${task.formattedDueDate}</td>
 				</tr>
 			</c:forEach>			
 		</tbody>

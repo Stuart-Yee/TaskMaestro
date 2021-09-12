@@ -23,7 +23,7 @@
 				<th>Owner</th><td>${Task.owner.name }</td>
 			</tr>
 			<tr>
-				<th>Due Date</th><td>${Task.dueDate }</td>
+				<th>Due Date</th><td>${dueDate }</td>
 			</tr>
 		</table>
 	</td>
