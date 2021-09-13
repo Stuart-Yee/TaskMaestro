@@ -3,11 +3,13 @@ package com.stuartyee.taskmaestro.services;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.time.ZonedDateTime;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,17 @@ public class MainService {
 		LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
 		String formattedDate = localDate.format(formatter);
 		return formattedDate;
+	}
+	
+	//Helper method to get now
+	public Date getNow() {
+		LocalDate now = LocalDate.now();
+		ZoneId defaultZoneId = ZoneId.systemDefault();
+		ZonedDateTime zonedDateTime = now.atStartOfDay(defaultZoneId);
+		Date today = Date.from(zonedDateTime.toInstant());
+		return today;
+		
+		
 	}
 		
 	
@@ -98,7 +111,8 @@ public class MainService {
 		for(User user : task.getHelpers()) {
 			userIds.add(user.getId());
 		}
-		if(task.getHelpers().isEmpty()) {
+		userIds.add(task.getOwner().getId());
+		if(userIds.isEmpty()) {
 			return uRepo.findAll();
 		} else {
 			return uRepo.findByIdNotIn(userIds);
@@ -114,8 +128,14 @@ public class MainService {
 	public List<Task> findAllTasks(){
 		List<Task> tasks = tRepo.findAll();
 		for (Task task : tasks) {
-			task.setFormattedCompletedDate(convertDate(task.getCompletedOn()));
+			if (task.getCompletedOn() == null) {
+				task.setFormattedCompletedDate("");
+			} else {
+				task.setFormattedCompletedDate(convertDate(task.getCompletedOn()));
+			}
+			
 			task.setFormattedDueDate(convertDate(task.getDueDate()));
+			task.setFormattedCreatedDate(convertDate(task.getCreatedAt()));
 		}
 		return tasks;
 	}
@@ -124,6 +144,7 @@ public class MainService {
 		List<Task> tasks = tRepo.findByCompletedFalseOrderByDueDateAsc();
 		for (Task task : tasks) {
 			task.setFormattedDueDate(convertDate(task.getDueDate()));
+			task.setFormattedCreatedDate(convertDate(task.getCreatedAt()));
 		}
 		return tasks;
 	}
@@ -131,7 +152,7 @@ public class MainService {
 	public List<Task> findOpenTasksDsc(){
 		List<Task> tasks = tRepo.findByCompletedFalseOrderByDueDateDesc();
 		for (Task task : tasks) {
-			task.setFormattedCompletedDate(convertDate(task.getCompletedOn()));
+			task.setFormattedCreatedDate(convertDate(task.getCreatedAt()));
 			task.setFormattedDueDate(convertDate(task.getDueDate()));
 		}
 		return tasks;
@@ -141,9 +162,18 @@ public class MainService {
 		Task task = tRepo.findById(id).orElse(null);
 		if (task.getCompletedOn() != null) {
 			task.setFormattedCompletedDate(convertDate(task.getCompletedOn()));
+		} else {
+			task.setFormattedCompletedDate("");
 		}
+		task.setFormattedCreatedDate(convertDate(task.getCreatedAt()));
 		task.setFormattedDueDate(convertDate(task.getDueDate()));		
 		return task; 
+	}
+	
+	public void completeTask(Task task) {
+		task.setCompletedOn(getNow());
+		task.setCompleted(true);
+		tRepo.save(task);
 	}
 	
 	// Comment Methods

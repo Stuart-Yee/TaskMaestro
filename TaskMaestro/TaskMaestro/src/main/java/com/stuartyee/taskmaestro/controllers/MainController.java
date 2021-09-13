@@ -160,6 +160,14 @@ public class MainController {
 		return "redirect:/login";
 	}
 	
+	//Mark complete
+	@PostMapping("/tasks/{id}/complete")
+	public String completeTask(@PathVariable("id") Long id) {
+		Task task = mServ.findTaskById(id);
+		mServ.completeTask(task);
+		return "redirect:/tasks/{id}/view";
+	}
+	
 	//Comment
 	@PostMapping("/tasks/{id}/comment")
 	public String postComment(HttpSession session, @RequestParam("comment") String comment, @PathVariable("id") Long id) {

@@ -51,7 +51,12 @@ public class Task implements Commentable{
 	@Transient
 	private String formattedCompletedDate;
 	
+	@Transient
+	private String formattedCreatedDate;
 	
+	
+
+
 	///
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="creator_user_id", updatable=false)
@@ -189,6 +194,14 @@ public class Task implements Commentable{
 
 	public void setFormattedCompletedDate(String formattedCompletedDate) {
 		this.formattedCompletedDate = formattedCompletedDate;
+	}
+	
+	public String getFormattedCreatedDate() {
+		return formattedCreatedDate;
+	}
+
+	public void setFormattedCreatedDate(String formattedCreatedDate) {
+		this.formattedCreatedDate = formattedCreatedDate;
 	}
 	
 	

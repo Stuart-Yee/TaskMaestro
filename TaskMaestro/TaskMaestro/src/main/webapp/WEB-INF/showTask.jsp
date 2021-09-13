@@ -29,12 +29,31 @@
 	</td>
 	<td>
 <table>
-		<tr><td>Helpers:</td></tr>
+		<tr><td>Helpers (${helpers.size()}):</td></tr>
 		<tr>
 			<td>
-			<c:forEach items="${helpers}" var="helper">
-				<p>${helper.name }<p>
+			<c:choose>
+				<c:when test="${helpers.size() < 1 }"></c:when>
+				<c:when test="${helpers.size() == 1}">${helpers.get(0).name}</c:when>
+				<c:when test="${helpers.size() == 2}">${helpers.get(0).name} and ${helpers.get(1).name}</c:when>
+				<c:otherwise>
+					<c:forEach items="${helpers}" var="helper">
+					<c:choose>
+					<c:when test="${helper.id != helpers.get(helpers.size()-2).id && helper.id != helpers.get(helpers.size()-1).id}">
+					${helper.name}, 
+					</c:when>
+					<c:when test="${helper.id == helpers.get(helpers.size()-2).id}">
+					 ${helper.name} and 
+					</c:when>
+					<c:otherwise>
+					${helper.name}
+					</c:otherwise>
+				</c:choose>
 			</c:forEach>
+				</c:otherwise>
+				
+			</c:choose>				
+			
 			<form action="/tasks/${Task.id}/addHelper" method="post">
 			<select name="newHelper">
 				<c:forEach items="${notHelpers}" var="notHelper">
@@ -43,8 +62,29 @@
 			</select>
 			<button>Add Helper</button>
 			</form>
+			<form action="/tasks/${Task.id}/removeHelper" method="post">
+			<select name="newHelper">
+				<c:forEach items="${helpers}" var="helper">
+					<option value="${helper.id}">${helper.name}</option>
+				</c:forEach>
+			</select>
+			<button>Remove Helper</button> 
+			</form>
 			
-			
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<c:choose>
+					<c:when test="${Task.completed == true }">
+						<p>Completed on ${Task.formattedCompletedDate}</p>
+					</c:when>
+					<c:otherwise>
+						<form action="/tasks/${Task.id}/complete" method="post">
+							<button>Mark Complete</button>
+						</form>
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 		</table>
@@ -52,7 +92,7 @@
 	</tr>
 </table>
 <p>
-Created by ${Task.creator.name } on ${Task.createdAt }
+Created by ${Task.creator.name } on ${Task.formattedCreatedDate }
 </p>
 <h2>Comments</h2>
 <form action="/tasks/${Task.id}/comment" method="post">
