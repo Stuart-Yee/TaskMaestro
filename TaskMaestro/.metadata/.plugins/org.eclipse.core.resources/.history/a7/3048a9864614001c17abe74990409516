@@ -143,7 +143,6 @@ public class MainController {
 		}
 	}
 	
-	//Helpers for tasks
 	@PostMapping("/tasks/{id}/addHelper")
 	public String addHelper(
 			@PathVariable("id") Long id, 
@@ -152,18 +151,6 @@ public class MainController {
 		Task task = mServ.findTaskById(id);
 		task.getHelpers().add(newHelper);
 		mServ.saveTask(task);
-		return "redirect:/tasks/{id}/view";
-	}
-	
-	@PostMapping("/tasks/{id}/removeHelper")
-	public String removeHelper(
-			@PathVariable("id") Long taskId,
-			@RequestParam("helper") Long helperId
-			) {
-		Task task = mServ.findTaskById(taskId);
-		User helper = mServ.findUserbyId(helperId);
-		task.getHelpers().remove(helper);
-		mServ.saveTask(task);		
 		return "redirect:/tasks/{id}/view";
 	}
 	

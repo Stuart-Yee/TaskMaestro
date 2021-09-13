@@ -63,7 +63,7 @@
 			<button>Add Helper</button>
 			</form>
 			<form action="/tasks/${Task.id}/removeHelper" method="post">
-			<select name="helper">
+			<select name="newHelper">
 				<c:forEach items="${helpers}" var="helper">
 					<option value="${helper.id}">${helper.name}</option>
 				</c:forEach>
