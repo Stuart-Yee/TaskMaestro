@@ -212,13 +212,6 @@ public class MainService {
 		}
 	}
 	
-	public void likeComment(User user, Comment comment) {
-		comment.getLikers().add(user);
-		comment.setNumberOfLikes(comment.getLikers().size());
-		cRepo.save(comment);
-		uRepo.save(user);
-	}
-	
 	
 	
 	

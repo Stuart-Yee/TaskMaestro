@@ -99,11 +99,9 @@ public class MainController {
 			@RequestParam("owner") Long id) throws ParseException {
 		Task newTask = new Task();
 		User loggedIn = (User) session.getAttribute("userLoggedIn");
-		SimpleDateFormat format2 = new SimpleDateFormat("yyyy-mm-dd");
-		Date date2 =format2.parse(dueDate);
+		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = format.parse(dueDate);
-		
 		
 		//Move this logic to the service
 		newTask.setCreator(loggedIn);

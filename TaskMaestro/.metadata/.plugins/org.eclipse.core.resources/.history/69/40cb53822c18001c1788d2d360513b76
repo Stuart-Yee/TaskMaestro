@@ -203,22 +203,6 @@ public class MainService {
 		return comments;
 	}
 	
-	// Like Methods
-	public boolean likedByUser(User user, Comment comment) {
-		if(comment.getLikers().contains(user)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public void likeComment(User user, Comment comment) {
-		comment.getLikers().add(user);
-		comment.setNumberOfLikes(comment.getLikers().size());
-		cRepo.save(comment);
-		uRepo.save(user);
-	}
-	
 	
 	
 	
