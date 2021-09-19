@@ -19,8 +19,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    
+  	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
     <link href="signin.css" rel="stylesheet">
@@ -33,7 +32,7 @@
       <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
       <p class="error"><c:out value="${error}"/></p>
       <input class="form-control" placeholder="Username" required autofocus name="username">
-      <input name="password" type="password" class="form-control" placeholder="Password" required >
+      <input name="password" type="password" class="form-control" placeholder="Password"  >
       <div class="checkbox mb-3">
         <label>
           <input type="checkbox" value="remember-me"> Remember me

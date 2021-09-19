@@ -15,12 +15,11 @@
 <body>
 <t:nav>
 
-Yo, <c:out value="${user.name }"/>!
 
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Task</th><th>Owner</th><th>Due Date</th>
+				<th>Open Task</th><th>Owner</th><th>Due Date</th>
 			</tr>
 		</thead>
 		<tbody>

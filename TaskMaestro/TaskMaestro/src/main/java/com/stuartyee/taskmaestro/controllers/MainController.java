@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.stuartyee.taskmaestro.models.Comment;
 import com.stuartyee.taskmaestro.models.Task;
 import com.stuartyee.taskmaestro.models.User;
 import com.stuartyee.taskmaestro.services.MainService;
@@ -50,14 +51,12 @@ public class MainController {
 	public String login(@RequestParam("username") String username, @RequestParam("password") String passwordEntry,
 			RedirectAttributes redAtt, HttpSession session) 
 	{
-		System.out.println(username);
-		System.out.println(passwordEntry);
 		if(mServ.authenticateUser(username, passwordEntry)) {
 			session.setAttribute("userLoggedIn", mServ.findUserByUsername(username));
 			return "redirect:/dashboard";
 		} else {
 			redAtt.addFlashAttribute("error", "Sorry, username/password combination not found");
-			return "login.jsp";
+			return "redirect:/login";
 		}	
 	}
 	
@@ -127,6 +126,7 @@ public class MainController {
 		}
 	}
 	
+	// Primary routing to view a given task
 	@GetMapping("/tasks/{id}/view")
 	public String showTask(HttpSession session, Model viewModel, @PathVariable("id") Long id) {
 		if(session.getAttribute("userLoggedIn") == null) {
@@ -134,12 +134,14 @@ public class MainController {
 		} else {
 			Task task = mServ.findTaskById(id);
 			User user = (User)session.getAttribute("userLoggedIn");
+			Long userId = user.getId();
 			List<User> helpers = task.getHelpers();
-			viewModel.addAttribute("user", user);
+			viewModel.addAttribute("user", mServ.findUserbyId(userId));
 			viewModel.addAttribute("Task", task);
 			viewModel.addAttribute("comments", mServ.findCommentsByTask(task));
 			viewModel.addAttribute("helpers", helpers);
 			viewModel.addAttribute("notHelpers", mServ.findNotHelping(task));
+			// viewModel.addAttribute("likedComments", mServ.findLikedCommentsUnderTask(user, task));
 			
 			return "showTask.jsp";
 		}
@@ -151,6 +153,7 @@ public class MainController {
 			@PathVariable("id") Long id, 
 			@RequestParam("newHelper") User newHelper
 			) {
+		// Opportunity to refactor and move to Service
 		Task task = mServ.findTaskById(id);
 		task.getHelpers().add(newHelper);
 		mServ.saveTask(task);
@@ -162,6 +165,7 @@ public class MainController {
 			@PathVariable("id") Long taskId,
 			@RequestParam("helper") Long helperId
 			) {
+		// Opportunity to refactor and move to Service
 		Task task = mServ.findTaskById(taskId);
 		User helper = mServ.findUserbyId(helperId);
 		task.getHelpers().remove(helper);
@@ -209,6 +213,44 @@ public class MainController {
 			return "redirect:/tasks/{task_id}/view";
 		}
 		
+	}
+	
+	//Liking and unliking comments
+	@PostMapping("/tasks/{task_id}/comment/{comment_id}/like")
+	public String likeComment(
+			HttpSession session,
+			@PathVariable("task_id") Long task_id,
+			@PathVariable("comment_id") Long comment_id
+			) {
+		if(session.getAttribute("userLoggedIn") == null) {
+			return "redirect:/login";
+		} else {
+			User user = (User)session.getAttribute("userLoggedIn");
+			Comment comment = mServ.findCommentById(comment_id);
+			mServ.likeComment(user, comment);
+			return "redirect:/tasks/{task_id}/view";
+		}		
+	}
+	
+	@PostMapping("/tasks/{task_id}/comment/{comment_id}/unlike")
+	public String unLikeComment(
+			HttpSession session,
+			@PathVariable("task_id") Long task_id,
+			@PathVariable("comment_id") Long comment_id
+			) {
+		if(session.getAttribute("userLoggedIn") == null) {
+			return "redirect:/login";
+		} else {
+			
+			User user = (User)session.getAttribute("userLoggedIn");
+			Comment comment = mServ.findCommentById(comment_id);
+			
+
+			//Calls service method
+			mServ.unLikeComment(user, comment);
+			
+			return "redirect:/tasks/{task_id}/view";
+		}		
 	}
 	
 	

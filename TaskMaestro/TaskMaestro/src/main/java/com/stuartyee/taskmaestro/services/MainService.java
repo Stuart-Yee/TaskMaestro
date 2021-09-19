@@ -1,9 +1,7 @@
 package com.stuartyee.taskmaestro.services;
 
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,6 +11,7 @@ import java.time.ZonedDateTime;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.stuartyee.taskmaestro.models.Comment;
 import com.stuartyee.taskmaestro.models.Task;
@@ -22,6 +21,7 @@ import com.stuartyee.taskmaestro.repositories.TaskRepository;
 import com.stuartyee.taskmaestro.repositories.UserRepository;
 
 @Service
+@Transactional
 public class MainService {
 	
 	UserRepository uRepo;
@@ -90,6 +90,10 @@ public class MainService {
 	public void saveUser(User user) {
 		String hashpassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 		user.setPassword(hashpassword);
+		uRepo.save(user);
+	}
+	
+	public void updateUser(User user) {
 		uRepo.save(user);
 	}
 	
@@ -185,6 +189,10 @@ public class MainService {
 		cRepo.save(comment);
 	}
 	
+	public void updateComment(Comment comment) {
+		cRepo.save(comment);
+	}
+	
 	public Comment findCommentById(Long id) {
 		return cRepo.findById(id).orElse(null);
 	}
@@ -203,9 +211,27 @@ public class MainService {
 		return comments;
 	}
 	
+	//List comments liked by the user in the current task
+	public List<Comment> findLikedCommentsUnderTask(User user, Task task){
+		List<Comment> theseComments = cRepo.findByParentTask(task);
+		List<Comment> likedComments = new ArrayList<>();
+		for (Comment comment : theseComments) {
+			if(user.getLikedComments().contains(comment)) {
+				likedComments.add(comment);
+			}
+		}
+		return likedComments;
+		
+	}
+	
 	// Like Methods
 	public boolean likedByUser(User user, Comment comment) {
-		if(comment.getLikers().contains(user)) {
+		System.out.println("Liked by user method invoked");
+		System.out.println("User: " + user);
+		for(Comment liked: user.getLikedComments()) {
+			System.out.println(liked);
+		}
+		if(user.getLikedComments().contains(comment)) {
 			return true;
 		} else {
 			return false;
@@ -218,6 +244,17 @@ public class MainService {
 		cRepo.save(comment);
 		uRepo.save(user);
 	}
+	
+	public void unLikeComment(User user, Comment comment) {
+
+		comment.getLikers().remove(findUserbyId(user.getId()));
+		
+		
+		comment.setNumberOfLikes(comment.getLikers().size());
+		cRepo.save(comment);
+		uRepo.save(user);
+	}
+
 	
 	
 	

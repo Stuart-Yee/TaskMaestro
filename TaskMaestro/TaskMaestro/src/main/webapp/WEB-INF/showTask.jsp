@@ -3,6 +3,8 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix = "t" tagdir = "/WEB-INF/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 
 <!DOCTYPE html>
 <html>
@@ -106,13 +108,19 @@ Created by ${Task.creator.name } on ${Task.formattedCreatedDate }
 			<td>
 				<p>${comment.content}</p>
 				<p>From: ${comment.commenter.name}, on ${comment.formattedCreatedDate}. ${comment.numberOfLikes} Likes</p>
-				<c:choose>
-					<c:when test="${comment.commenter.id == user.id }">
-						<p><a href="/tasks/${Task.id }/delete/${comment.id}">Delete</a></p>
-					</c:when>
-					<c:otherwise>
-					</c:otherwise>
-				</c:choose>
+				
+				<c:if test="${fn:contains(comment.likers, user)}">					
+            		<form action="/tasks/${Task.id}/comment/${comment.id}/unlike" method="post">
+							<button>Unlike</button>
+					</form>
+        		</c:if>
+        		
+        		<c:if test="${not fn:contains(comment.likers, user)}">					
+            		<form action="/tasks/${Task.id}/comment/${comment.id}/like" method="post">
+							<button>Like</button>
+					</form>
+        		</c:if>
+				
 			</td>
 			<td>Liked By:
 				<c:forEach items="${comment.likers }" var="liker">
