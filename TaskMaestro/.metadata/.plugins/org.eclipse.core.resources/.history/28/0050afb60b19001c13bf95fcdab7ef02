@@ -21,19 +21,10 @@
 <table class="table">
 	<tr><td>
 		<table>
-						<tr>
-							<th>Owner</th>
-							<td>${Task.owner.name}</td>
-							<form action="/tasks/${Task.id}/reassign" method="post">
-								<select name="newOwner">
-									<c:forEach items="${notHelpers}" var="notHelper">
-										<option value="${notHelper.id}">${notHelper.name}</option>
-									</c:forEach>
-								</select>
-								<button>Reassign</button>
-							</form>
-						</tr>
-						<tr>
+			<tr>
+				<th>Owner</th><td>${Task.owner.name }</td>
+			</tr>
+			<tr>
 				<th>Due Date</th><td>${Task.formattedDueDate }</td>
 			</tr>
 		</table>

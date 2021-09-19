@@ -15,7 +15,26 @@
 <body>
 <t:nav>
 
-	<h1>Team Dashboard</h1>
+	<h1>My Items</h1>
+	<table>
+		<tr>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Open Task</th>><th>Due Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${myTasks}" var="task">
+				<tr>
+					<td><a href="/tasks/${task.id}/view">${task.description}</a></td><td>${task.formattedDueDate}</td>
+				</tr>
+			</c:forEach>			
+		</tbody>
+
+	</table>
+	
+	<h1>I'm helping on:</h1>
 	<table class="table">
 		<thead>
 			<tr>
@@ -23,13 +42,15 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${openTasks}" var="task">
+			<c:forEach items="${helpTasks}" var="task">
 				<tr>
 					<td><a href="/tasks/${task.id}/view">${task.description}</a></td><td>${task.owner.name}</td><td>${task.formattedDueDate}</td>
 				</tr>
 			</c:forEach>			
 		</tbody>
 
+	</table>
+		</tr>
 	</table>
 
 </t:nav>

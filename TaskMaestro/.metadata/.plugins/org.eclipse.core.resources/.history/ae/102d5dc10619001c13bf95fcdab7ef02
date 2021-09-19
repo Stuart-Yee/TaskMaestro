@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -148,20 +147,6 @@ public class MainController {
 		}
 	}
 	
-	//Reassign task
-	@PostMapping("/tasks/{id}/reassign")
-	public String reassign(
-			HttpSession session,
-			@PathVariable("id") Long taskId,
-			@RequestParam("newOwner") Long ownerId
-			) {
-		Task task = mServ.findTaskById(taskId);
-		task.setOwner(mServ.findUserbyId(ownerId));
-		mServ.saveTask(task);
-		return "redirect:/tasks/{id}/view";
-	}
-	
-	
 	//Helpers for tasks
 	@PostMapping("/tasks/{id}/addHelper")
 	public String addHelper(
@@ -266,37 +251,6 @@ public class MainController {
 			
 			return "redirect:/tasks/{task_id}/view";
 		}		
-	}
-	
-	//user page routings
-	
-	@RequestMapping("/users/{user_id}/items")
-	public String myDashboard(
-			HttpSession session,
-			@PathVariable("user_id") Long userId,
-			Model viewModel
-			) {
-		if(session.getAttribute("userLoggedIn") == null) {
-			return "redirect:/login";
-		} else {
-			User user = mServ.findUserbyId(userId);
-			List<Task> myTasks = new ArrayList<>();
-			for(Task task : user.getOwnedTasks()) {
-				task.setFormattedCreatedDate(mServ.convertDate(task.getCreatedAt()));
-				task.setFormattedDueDate(mServ.convertDate(task.getDueDate()));
-				myTasks.add(task);
-			}
-			List<Task> helpTasks = new ArrayList<>();
-			for(Task task : user.getHelpingTasks()) {
-				task.setFormattedCreatedDate(mServ.convertDate(task.getCreatedAt()));
-				task.setFormattedDueDate(mServ.convertDate(task.getDueDate()));
-				helpTasks.add(task);
-			}
-			viewModel.addAttribute("myTasks", myTasks);
-			viewModel.addAttribute("helpTasks", helpTasks);		
-			viewModel.addAttribute("user", user);
-			return "userdashboard.jsp";
-		}
 	}
 	
 	

@@ -157,7 +157,6 @@ public class MainController {
 			) {
 		Task task = mServ.findTaskById(taskId);
 		task.setOwner(mServ.findUserbyId(ownerId));
-		mServ.saveTask(task);
 		return "redirect:/tasks/{id}/view";
 	}
 	

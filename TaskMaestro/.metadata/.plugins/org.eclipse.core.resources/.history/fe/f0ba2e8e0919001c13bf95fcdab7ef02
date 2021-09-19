@@ -148,20 +148,6 @@ public class MainController {
 		}
 	}
 	
-	//Reassign task
-	@PostMapping("/tasks/{id}/reassign")
-	public String reassign(
-			HttpSession session,
-			@PathVariable("id") Long taskId,
-			@RequestParam("newOwner") Long ownerId
-			) {
-		Task task = mServ.findTaskById(taskId);
-		task.setOwner(mServ.findUserbyId(ownerId));
-		mServ.saveTask(task);
-		return "redirect:/tasks/{id}/view";
-	}
-	
-	
 	//Helpers for tasks
 	@PostMapping("/tasks/{id}/addHelper")
 	public String addHelper(
@@ -290,7 +276,7 @@ public class MainController {
 			for(Task task : user.getHelpingTasks()) {
 				task.setFormattedCreatedDate(mServ.convertDate(task.getCreatedAt()));
 				task.setFormattedDueDate(mServ.convertDate(task.getDueDate()));
-				helpTasks.add(task);
+				myTasks.add(task);
 			}
 			viewModel.addAttribute("myTasks", myTasks);
 			viewModel.addAttribute("helpTasks", helpTasks);		

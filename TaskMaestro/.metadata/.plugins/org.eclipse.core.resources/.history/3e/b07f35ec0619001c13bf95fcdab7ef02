@@ -23,7 +23,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${openTasks}" var="task">
+			<c:forEach items="${user.ownedTasks}" var="task">
 				<tr>
 					<td><a href="/tasks/${task.id}/view">${task.description}</a></td><td>${task.owner.name}</td><td>${task.formattedDueDate}</td>
 				</tr>

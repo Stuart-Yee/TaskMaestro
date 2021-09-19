@@ -30,7 +30,6 @@
 										<option value="${notHelper.id}">${notHelper.name}</option>
 									</c:forEach>
 								</select>
-								<button>Reassign</button>
 							</form>
 						</tr>
 						<tr>
